@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Manage Categories";
+}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="fw-bold mb-0"><i class="bi bi-tags text-success me-1"></i>Manage Categories</h3>
+        <a asp-action="CreateCategory" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i>Add Category</a>
+    </div>
+    <div class="card p-3">
+        <div class="table-responsive">
+            <table class="table table-clean align-middle">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Source</th>
+                        <th>Transactions</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var c in Model)
+                    {
+                        <tr>
+                            <td>@c.CategoryName</td>
+                            <td>@c.CategoryType</td>
+                            <td>@(c.IsSystemDefault ? "System Default" : "User Created")</td>
+                            <td>@c.TransactionCount</td>
+                            <td class="text-end">
+                                <a asp-action="EditCategory" asp-route-id="@c.CategoryId" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                                <form asp-action="DeleteCategory" asp-route-id="@c.CategoryId" method="post" class="d-inline"
+                                      onsubmit="return confirm('Delete this category?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

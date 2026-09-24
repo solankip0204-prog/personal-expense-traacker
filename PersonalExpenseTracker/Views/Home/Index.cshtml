@@ -1,0 +1,78 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <h1 class="display-5">Manage Your Money Smarter</h1>
+                <p class="lead">Track your income, expenses and spending habits in one simple and secure place.</p>
+                <div class="mt-4">
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-light btn-lg fw-semibold me-2">
+                        <i class="bi bi-rocket-takeoff me-1"></i>Get Started
+                    </a>
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-box-arrow-in-right me-1"></i>Login
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 d-none d-lg-block">
+                <div class="card rounded-xl p-4 text-dark">
+                    <h6 class="text-muted mb-3">This Month at a Glance</h6>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Total Income</span><strong class="text-success">₹40,000</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Total Expenses</span><strong class="text-danger">₹18,500</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Balance</span><strong class="text-primary">₹21,500</strong>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" style="width: 46%">46% spent</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Everything You Need to Stay on Budget</h2>
+        <p class="text-muted">Simple tools that help you understand where your money goes.</p>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card feature-card h-100 p-4 text-center">
+                <div class="feature-icon mx-auto mb-3"><i class="bi bi-graph-up-arrow"></i></div>
+                <h5 class="fw-bold">Track Income &amp; Expenses</h5>
+                <p class="text-muted small mb-0">Log every transaction with category, date and payment method.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card feature-card h-100 p-4 text-center">
+                <div class="feature-icon mx-auto mb-3"><i class="bi bi-pie-chart"></i></div>
+                <h5 class="fw-bold">Visual Reports</h5>
+                <p class="text-muted small mb-0">See spending by category and income vs. expense trends.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card feature-card h-100 p-4 text-center">
+                <div class="feature-icon mx-auto mb-3"><i class="bi bi-piggy-bank"></i></div>
+                <h5 class="fw-bold">Set Budgets</h5>
+                <p class="text-muted small mb-0">Create monthly budgets per category and track usage in real time.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-white py-5 border-top">
+    <div class="container text-center">
+        <h3 class="fw-bold mb-3">Ready to take control of your finances?</h3>
+        <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg">
+            <i class="bi bi-person-plus me-1"></i>Create your free account
+        </a>
+    </div>
+</section>

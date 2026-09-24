@@ -1,0 +1,34 @@
+@{
+    ViewData["Title"] = "Features";
+}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Features</h2>
+        <p class="text-muted">A complete overview of what Personal Expense Tracker offers.</p>
+    </div>
+    <div class="row g-4">
+        @{
+            var features = new (string icon, string title, string desc)[]
+            {
+                ("bi-wallet2", "Income & Expense Tracking", "Add, edit and delete income and expense records with category, date and payment method."),
+                ("bi-tags", "Custom Categories", "Use built-in categories or create your own for both income and expenses."),
+                ("bi-search", "Search & Filter", "Quickly find transactions by description, category, date range or amount."),
+                ("bi-bar-chart-line", "Monthly Summary", "View total income, expenses and balance for any month and year."),
+                ("bi-pie-chart-fill", "Category Reports", "Visualize spending by category using interactive pie and bar charts."),
+                ("bi-piggy-bank", "Budget Tracking", "Set a monthly budget per category and get warned as you approach the limit."),
+                ("bi-shield-lock", "Secure Login", "Passwords are hashed and each user can only access their own data."),
+                ("bi-person-gear", "Profile Management", "Update your personal details and change your password anytime.")
+            };
+        }
+        @foreach (var f in features)
+        {
+            <div class="col-md-6 col-lg-3">
+                <div class="card feature-card h-100 p-4 text-center">
+                    <div class="feature-icon mx-auto mb-3"><i class="bi @f.icon"></i></div>
+                    <h6 class="fw-bold">@f.title</h6>
+                    <p class="text-muted small mb-0">@f.desc</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>

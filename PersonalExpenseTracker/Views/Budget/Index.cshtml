@@ -1,0 +1,72 @@
+@model List<Budget>
+@{
+    ViewData["Title"] = "Budgets";
+    var months = Enumerable.Range(1, 12).Select(m => new { Value = m, Name = new DateTime(2000, m, 1).ToString("MMMM") });
+}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="fw-bold mb-0"><i class="bi bi-piggy-bank text-success me-1"></i>Budgets</h3>
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i>Add Budget</a>
+    </div>
+
+    <form method="get" asp-action="Index" class="row g-2 align-items-end mb-3">
+        <div class="col-md-3">
+            <label class="form-label small">Month</label>
+            <select name="month" class="form-select form-select-sm">
+                @foreach (var m in months)
+                {
+                    <option value="@m.Value" selected="@(m.Value == (int)ViewBag.Month)">@m.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small">Year</label>
+            <input type="number" name="year" value="@ViewBag.Year" class="form-control form-control-sm" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary btn-sm">View</button>
+        </div>
+    </form>
+
+    @if (!Model.Any())
+    {
+        <div class="card p-4 text-center text-muted">No budgets set for this month. Click "Add Budget" to create one.</div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (var b in Model)
+            {
+                var pct = b.PercentageUsed;
+                var barClass = pct >= 100 ? "bg-danger" : pct >= 75 ? "bg-warning" : "bg-success";
+                <div class="col-md-6 col-lg-4">
+                    <div class="card p-3 h-100">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="fw-bold">@b.Category.CategoryName</h6>
+                            <span>
+                                <a asp-action="Edit" asp-route-id="@b.BudgetId" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                                <a asp-action="Delete" asp-route-id="@b.BudgetId" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                            </span>
+                        </div>
+                        <p class="small text-muted mb-1">Budget: ₹@b.Amount.ToString("N2") &middot; Spent: ₹@b.SpentAmount.ToString("N2")</p>
+                        <div class="progress mb-2">
+                            <div class="progress-bar @barClass" style="width: @(Math.Min(pct, 100))%">@pct%</div>
+                        </div>
+                        @if (pct >= 100)
+                        {
+                            <span class="badge bg-danger">Budget exceeded</span>
+                        }
+                        else if (pct >= 90)
+                        {
+                            <span class="badge bg-warning text-dark">@pct% of @b.Category.CategoryName budget used</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-light text-dark border">Remaining: ₹@b.RemainingAmount.ToString("N2")</span>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

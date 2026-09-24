@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Manage Users";
+}
+<div class="container py-4">
+    <h3 class="fw-bold mb-3"><i class="bi bi-people text-success me-1"></i>Manage Users</h3>
+    <div class="card p-3">
+        <div class="table-responsive">
+            <table class="table table-clean align-middle">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Registered</th>
+                        <th>Transactions</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var u in Model)
+                    {
+                        <tr>
+                            <td>@u.FullName</td>
+                            <td>@u.Email</td>
+                            <td>@u.PhoneNumber</td>
+                            <td>@u.CreatedDate.ToString("dd MMM yyyy")</td>
+                            <td>@u.TransactionCount</td>
+                            <td class="text-end">
+                                <a asp-action="UserDetails" asp-route-id="@u.UserId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a>
+                                <form asp-action="DeleteUser" asp-route-id="@u.UserId" method="post" class="d-inline"
+                                      onsubmit="return confirm('Delete this user and all their data? This cannot be undone.');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

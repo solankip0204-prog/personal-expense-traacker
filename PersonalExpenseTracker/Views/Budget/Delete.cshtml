@@ -1,0 +1,19 @@
+@model Budget
+@{
+    ViewData["Title"] = "Delete Budget";
+}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card p-4 border-danger">
+                <h4 class="fw-bold mb-3 text-danger"><i class="bi bi-exclamation-triangle me-1"></i>Delete Budget</h4>
+                <p>Are you sure you want to delete the budget for "<strong>@Model.Category.CategoryName</strong>" (@(new DateTime(2000, Model.Month, 1).ToString("MMMM")) @Model.Year)?</p>
+                <form asp-action="Delete" asp-route-id="@Model.BudgetId" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Confirm Delete</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

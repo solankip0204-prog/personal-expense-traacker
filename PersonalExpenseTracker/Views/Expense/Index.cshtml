@@ -1,0 +1,114 @@
+@model List<Expense>
+@{
+    ViewData["Title"] = "Expenses";
+    var categories = ViewBag.Categories as List<Category>;
+}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="fw-bold mb-0"><i class="bi bi-cash-stack text-danger me-1"></i>Expenses</h3>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-1"></i>Add Expense
+        </a>
+    </div>
+
+    <div class="card p-3 mb-3">
+        <form method="get" asp-action="Index" class="row g-2 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label small">Search</label>
+                <input type="text" name="search" value="@ViewBag.Search" class="form-control form-control-sm" placeholder="Description or category" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">Category</label>
+                <select name="categoryId" class="form-select form-select-sm">
+                    <option value="">All</option>
+                    @foreach (var c in categories)
+                    {
+                        <option value="@c.CategoryId" selected="@(ViewBag.CategoryId == c.CategoryId)">@c.CategoryName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">Start Date</label>
+                <input type="date" name="startDate" value="@ViewBag.StartDate" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">End Date</label>
+                <input type="date" name="endDate" value="@ViewBag.EndDate" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">Payment</label>
+                <select name="paymentMethod" class="form-select form-select-sm">
+                    <option value="">All</option>
+                    @foreach (var pm in Enum.GetValues(typeof(PaymentMethod)))
+                    {
+                        <option value="@pm" selected="@(ViewBag.PaymentMethod?.ToString() == pm.ToString())">@pm</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="bi bi-search"></i></button>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">Min Amount</label>
+                <input type="number" step="0.01" name="minAmount" value="@ViewBag.MinAmount" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">Max Amount</label>
+                <input type="number" step="0.01" name="maxAmount" value="@ViewBag.MaxAmount" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small">Sort By</label>
+                <select name="sortBy" class="form-select form-select-sm">
+                    <option value="date_desc">Date (Newest)</option>
+                    <option value="date_asc">Date (Oldest)</option>
+                    <option value="amount_desc">Amount (High-Low)</option>
+                    <option value="amount_asc">Amount (Low-High)</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Clear Filters</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="card p-3">
+        @if (!Model.Any())
+        {
+            <p class="text-muted text-center mb-0 py-4">No expenses found. Try adjusting your filters or add a new expense.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-clean align-middle">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Payment Method</th>
+                            <th class="text-end">Amount</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var e in Model)
+                        {
+                            <tr>
+                                <td>@e.ExpenseDate.ToString("dd MMM yyyy")</td>
+                                <td><span class="badge bg-light text-dark border">@e.Category.CategoryName</span></td>
+                                <td>@e.Description</td>
+                                <td>@e.PaymentMethod</td>
+                                <td class="text-end fw-semibold text-danger">₹@e.Amount.ToString("N2")</td>
+                                <td class="text-end">
+                                    <a asp-action="Details" asp-route-id="@e.ExpenseId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a>
+                                    <a asp-action="Edit" asp-route-id="@e.ExpenseId" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@e.ExpenseId" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

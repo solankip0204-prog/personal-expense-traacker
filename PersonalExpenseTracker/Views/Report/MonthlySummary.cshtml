@@ -1,0 +1,75 @@
+@model MonthlySummaryViewModel
+@{
+    ViewData["Title"] = "Monthly Summary";
+    var months = Enumerable.Range(1, 12).Select(m => new { Value = m, Name = new DateTime(2000, m, 1).ToString("MMMM") });
+}
+<div class="container py-4">
+    <h3 class="fw-bold mb-3"><i class="bi bi-calendar-check text-primary me-1"></i>Monthly Summary</h3>
+
+    <form method="get" asp-action="MonthlySummary" class="row g-2 align-items-end mb-4">
+        <div class="col-md-3">
+            <label class="form-label small">Month</label>
+            <select name="month" class="form-select form-select-sm">
+                @foreach (var m in months)
+                {
+                    <option value="@m.Value" selected="@(m.Value == Model.Month)">@m.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small">Year</label>
+            <input type="number" name="year" value="@Model.Year" class="form-control form-control-sm" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary btn-sm">View Summary</button>
+        </div>
+    </form>
+
+    <h5 class="fw-bold mb-3">@(new DateTime(2000, Model.Month, 1).ToString("MMMM")) @Model.Year</h5>
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="card stat-card income p-3">
+                <div class="text-muted small">Total Income</div>
+                <div class="stat-value text-success">₹@Model.TotalIncome.ToString("N2")</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card stat-card expense p-3">
+                <div class="text-muted small">Total Expenses</div>
+                <div class="stat-value text-danger">₹@Model.TotalExpenses.ToString("N2")</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card stat-card balance p-3">
+                <div class="text-muted small">Balance</div>
+                <div class="stat-value text-primary">₹@Model.Balance.ToString("N2")</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-1">
+        <div class="col-md-4">
+            <div class="card p-3">
+                <div class="text-muted small">Number of Expenses</div>
+                <div class="fw-bold fs-5">@Model.NumberOfExpenses</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3">
+                <div class="text-muted small">Highest Expense</div>
+                <div class="fw-bold fs-5">₹@Model.HighestExpense.ToString("N2")</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3">
+                <div class="text-muted small">Average Expense</div>
+                <div class="fw-bold fs-5">₹@Model.AverageExpense.ToString("N2")</div>
+            </div>
+        </div>
+    </div>
+
+    <a asp-action="ExpenseReport" asp-route-month="@Model.Month" asp-route-year="@Model.Year" class="btn btn-outline-primary mt-4">
+        <i class="bi bi-pie-chart me-1"></i>View Category Report &amp; Charts
+    </a>
+</div>

@@ -1,0 +1,57 @@
+@model List<AdminTransactionRow>
+@{
+    ViewData["Title"] = "Manage Transactions";
+}
+<div class="container py-4">
+    <h3 class="fw-bold mb-3"><i class="bi bi-list-check text-success me-1"></i>Manage Transactions</h3>
+    <div class="card p-3">
+        <div class="table-responsive">
+            <table class="table table-clean align-middle">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Type</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Payment</th>
+                        <th class="text-end">Amount</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var t in Model)
+                    {
+                        <tr>
+                            <td>@t.UserName</td>
+                            <td>
+                                @if (t.Type == "Income")
+                                {
+                                    <span class="badge badge-income">Income</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-expense">Expense</span>
+                                }
+                            </td>
+                            <td>@t.CategoryName</td>
+                            <td>@t.Description</td>
+                            <td>@t.Date.ToString("dd MMM yyyy")</td>
+                            <td>@t.PaymentMethod</td>
+                            <td class="text-end fw-semibold">₹@t.Amount.ToString("N2")</td>
+                            <td class="text-end">
+                                <form asp-action="DeleteTransaction" method="post" class="d-inline"
+                                      onsubmit="return confirm('Delete this transaction?');">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@t.Id" />
+                                    <input type="hidden" name="type" value="@t.Type" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

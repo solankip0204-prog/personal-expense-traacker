@@ -1,0 +1,16 @@
+@model PersonalExpenseTracker.Controllers.ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+<div class="container py-5 text-center">
+    <i class="bi bi-exclamation-octagon display-1 text-danger"></i>
+    <h1 class="mt-3">Something went wrong</h1>
+    <p class="text-muted">An unexpected error occurred while processing your request.</p>
+    @if (Model != null && Model.ShowRequestId)
+    {
+        <p class="small text-muted">Request ID: <code>@Model.RequestId</code></p>
+    }
+    <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-2">
+        <i class="bi bi-house me-1"></i>Back to Home
+    </a>
+</div>

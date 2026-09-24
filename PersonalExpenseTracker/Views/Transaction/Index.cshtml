@@ -1,0 +1,103 @@
+@model List<TransactionRow>
+@{
+    ViewData["Title"] = "Transactions";
+    var categories = ViewBag.Categories as List<Category>;
+}
+<div class="container py-4">
+    <h3 class="fw-bold mb-3"><i class="bi bi-list-ul text-primary me-1"></i>All Transactions</h3>
+
+    <div class="card p-3 mb-3">
+        <form method="get" asp-action="Index" class="row g-2 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label small">Search</label>
+                <input type="text" name="search" value="@ViewBag.Search" class="form-control form-control-sm" placeholder="Description or category" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">Type</label>
+                <select name="type" class="form-select form-select-sm">
+                    <option value="">All</option>
+                    <option value="Income" selected="@(ViewBag.Type == "Income")">Income</option>
+                    <option value="Expense" selected="@(ViewBag.Type == "Expense")">Expense</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">Category</label>
+                <select name="categoryId" class="form-select form-select-sm">
+                    <option value="">All</option>
+                    @foreach (var c in categories)
+                    {
+                        <option value="@c.CategoryId" selected="@(ViewBag.CategoryId == c.CategoryId)">@c.CategoryName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">Start Date</label>
+                <input type="date" name="startDate" value="@ViewBag.StartDate" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">End Date</label>
+                <input type="date" name="endDate" value="@ViewBag.EndDate" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="bi bi-search"></i></button>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small">Sort By</label>
+                <select name="sortBy" class="form-select form-select-sm">
+                    <option value="date_desc">Date (Newest)</option>
+                    <option value="date_asc">Date (Oldest)</option>
+                    <option value="amount_desc">Amount (High-Low)</option>
+                    <option value="amount_asc">Amount (Low-High)</option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+    <div class="card p-3">
+        @if (!Model.Any())
+        {
+            <p class="text-muted text-center mb-0 py-4">No transactions found.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-clean align-middle">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Payment Method</th>
+                            <th class="text-end">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var t in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @if (t.Type == "Income")
+                                    {
+                                        <span class="badge badge-income"><i class="bi bi-arrow-down-circle"></i> Income</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-expense"><i class="bi bi-arrow-up-circle"></i> Expense</span>
+                                    }
+                                </td>
+                                <td>@t.CategoryName</td>
+                                <td>@t.Description</td>
+                                <td>@t.Date.ToString("dd MMM yyyy")</td>
+                                <td>@t.PaymentMethod</td>
+                                <td class="text-end fw-semibold @(t.Type == "Income" ? "text-success" : "text-danger")">
+                                    @(t.Type == "Income" ? "+" : "-")₹@t.Amount.ToString("N2")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
